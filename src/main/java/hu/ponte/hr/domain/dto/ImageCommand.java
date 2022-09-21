@@ -6,16 +6,19 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ImageCommand {
-    private Long id;
+
+    private String id;
     private String name;
-    private String MimeType;
-    private String sign;
+    private String mimeType;
+    private long size;
+    private String digitalSign;
+    private byte[] fileData;
 
 
-    public ImageCommand(String name, String mimeType) {
+    public ImageCommand(String name, String mimeType, long size, byte[] fileData) {
         this.name = name;
-        MimeType = mimeType;
+        this.mimeType = mimeType;
+        this.size = size;
+        this.fileData = fileData;
     }
-
-
 }

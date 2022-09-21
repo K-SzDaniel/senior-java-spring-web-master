@@ -25,7 +25,7 @@ public class UploadController {
     @RequestMapping(value = "post", method = RequestMethod.POST)
     @ResponseBody
     public String handleFormUpload(@RequestParam("file") MultipartFile file) throws IOException {
-        this.imageStoreService.saveImageAtByteArray(new ImageCommand(file.getName(),file.getContentType()));
+        this.imageStoreService.saveImageAtByteArray(new ImageCommand(file.getName(), file.getContentType(), file.getSize(), file.getBytes()));
         return "ok";
     }
 }
