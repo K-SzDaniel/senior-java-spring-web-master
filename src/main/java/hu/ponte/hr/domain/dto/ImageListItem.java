@@ -1,4 +1,4 @@
-package hu.ponte.hr.controller;
+package hu.ponte.hr.domain.dto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import lombok.Getter;
  */
 @Getter
 @Builder
-public class ImageMeta
+public class ImageListItem
 {
 	private String id;
 	private String name;
