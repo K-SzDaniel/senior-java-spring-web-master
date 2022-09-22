@@ -45,7 +45,7 @@ public class ImageStoreService {
         return imageRepository.findById(id).orElseThrow(EntityNotFoundException::new).getFileData();
     }
 
-    private static String makeKey(String originalString) throws NoSuchAlgorithmException, SignatureException, InvalidKeyException {
+    private static String makeKey(String fileName) throws NoSuchAlgorithmException, SignatureException, InvalidKeyException {
 
         KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
         kpg.initialize(2048);
@@ -57,7 +57,7 @@ public class ImageStoreService {
                 Signature sha_rsa = Signature.getInstance("SHA256withRSA");
         sha_rsa.initSign(rsaPrivateKey);
 
-        sha_rsa.update("encodedhash".getBytes(StandardCharsets.UTF_8));
+        sha_rsa.update(fileName.getBytes(StandardCharsets.UTF_8));
         byte[] signature = sha_rsa.sign();
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(signature);
 
