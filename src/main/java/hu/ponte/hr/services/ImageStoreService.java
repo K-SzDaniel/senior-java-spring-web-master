@@ -27,4 +27,8 @@ public class ImageStoreService {
     public List<ImageListItem> getAllImage() {
         return imageRepository.findAll().stream().map(ImageListItem::new).collect(Collectors.toList());
     }
+
+    public byte[] getByteArrayById(Long id) {
+        return imageRepository.findById(id).get().getFileData();
+    }
 }
