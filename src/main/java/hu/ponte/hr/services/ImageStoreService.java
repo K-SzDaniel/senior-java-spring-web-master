@@ -7,6 +7,7 @@ import hu.ponte.hr.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,6 @@ public class ImageStoreService {
     }
 
     public byte[] getByteArrayById(Long id) {
-        return imageRepository.findById(id).get().getFileData();
+        return imageRepository.findById(id).orElseThrow(EntityNotFoundException::new).getFileData();
     }
 }
