@@ -17,6 +17,7 @@ public class Image {
     private String name;
     private String mimeType;
     private long size;
+    @Column(length = 1000)
     private String digitalSign;
     @Column(length = 10_000_000)
     private byte[] fileData;

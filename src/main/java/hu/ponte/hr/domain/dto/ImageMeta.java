@@ -1,14 +1,13 @@
 package hu.ponte.hr.domain.dto;
 
 import hu.ponte.hr.domain.Image;
-import lombok.Builder;
 import lombok.Getter;
 
 /**
  * @author zoltan
  */
 @Getter
-public class ImageListItem
+public class ImageMeta
 {
 	private Long id;
 	private String name;
@@ -16,7 +15,7 @@ public class ImageListItem
 	private String digitalSign;
 
 
-	public ImageListItem(Image image) {
+	public ImageMeta(Image image) {
 		this.id = image.getId();
 		this.name = image.getName();
 		this.mimeType = image.getMimeType();

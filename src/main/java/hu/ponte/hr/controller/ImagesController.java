@@ -1,7 +1,7 @@
 package hu.ponte.hr.controller;
 
 
-import hu.ponte.hr.domain.dto.ImageListItem;
+import hu.ponte.hr.domain.dto.ImageMeta;
 import hu.ponte.hr.services.ImageStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +26,7 @@ public class ImagesController {
     }
 
     @GetMapping("meta")
-    public ResponseEntity<List<ImageListItem>> listImages() {
+    public ResponseEntity<List<ImageMeta>> listImages() {
         return new ResponseEntity<>(imageStoreService.getAllImage(), HttpStatus.OK);
     }
 
