@@ -1,5 +1,6 @@
 package hu.ponte.hr.domain.dto;
 
+import hu.ponte.hr.domain.Image;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -7,12 +8,18 @@ import lombok.Getter;
  * @author zoltan
  */
 @Getter
-@Builder
 public class ImageListItem
 {
-	private String id;
+	private Long id;
 	private String name;
 	private String mimeType;
-	private long size;
 	private String digitalSign;
+
+
+	public ImageListItem(Image image) {
+		this.id = image.getId();
+		this.name = image.getName();
+		this.mimeType = image.getMimeType();
+		this.digitalSign = image.getDigitalSign();
+	}
 }

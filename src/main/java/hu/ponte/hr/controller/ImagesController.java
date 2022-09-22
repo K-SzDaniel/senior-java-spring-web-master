@@ -17,16 +17,20 @@ import java.util.List;
 @RequestMapping("api/images")
 public class ImagesController {
 
-    @Autowired
     private ImageStoreService imageStoreService;
+
+    @Autowired
+    public ImagesController(ImageStoreService imageStoreService) {
+        this.imageStoreService = imageStoreService;
+    }
 
     @GetMapping("meta")
     public List<ImageListItem> listImages() {
-		return Collections.emptyList();
+        return imageStoreService.getAllImage();
     }
 
     @GetMapping("preview/{id}")
     public void getImage(@PathVariable("id") String id, HttpServletResponse response) {
-	}
+    }
 
 }
