@@ -7,16 +7,10 @@ import hu.ponte.hr.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.persistence.EntityNotFoundException;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,14 +19,16 @@ import java.util.stream.Collectors;
 public class ImageStoreService {
 
     private final ImageRepository imageRepository;
+    private final SignService signService;
 
     @Autowired
-    public ImageStoreService(ImageRepository imageRepository) {
+    public ImageStoreService(ImageRepository imageRepository, SignService signService) {
         this.imageRepository = imageRepository;
+        this.signService = signService;
     }
 
-    public void saveImageAtByteArray(ImageCommand imageCommand) throws NoSuchAlgorithmException, InvalidKeySpecException, SignatureException, InvalidKeyException {
-        String key = makeKey(imageCommand.getName() + imageCommand.getMimeType());
+    public void saveImageAtByteArray(ImageCommand imageCommand) throws NoSuchAlgorithmException, InvalidKeySpecException, SignatureException, InvalidKeyException, IOException {
+        String key = signService.makeDigitalSign(imageCommand.getName());
         imageCommand.setDigitalSign(key);
         this.imageRepository.save(new Image(imageCommand));
     }
@@ -45,29 +41,8 @@ public class ImageStoreService {
         return imageRepository.findById(id).orElseThrow(EntityNotFoundException::new).getFileData();
     }
 
-    private static String makeKey(String fileName) throws NoSuchAlgorithmException, SignatureException, InvalidKeyException {
-
-        KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
-        kpg.initialize(2048);
-        KeyPair kp = kpg.generateKeyPair();
-        PublicKey rsaPublicKey = kp.getPublic();
-        PrivateKey rsaPrivateKey = kp.getPrivate();
 
 
-                Signature sha_rsa = Signature.getInstance("SHA256withRSA");
-        sha_rsa.initSign(rsaPrivateKey);
 
-        sha_rsa.update(fileName.getBytes(StandardCharsets.UTF_8));
-        byte[] signature = sha_rsa.sign();
-        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(signature);
-
-
-        return Base64.getEncoder().encodeToString(spec.getEncoded());
-    }
-
-    public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-        System.out.println(makeKey("dani"));
-
-    }
 
 }
