@@ -27,7 +27,7 @@ public class ImageStoreService {
         this.signService = signService;
     }
 
-    public void saveImageAtByteArray(ImageCommand imageCommand) throws NoSuchAlgorithmException, InvalidKeySpecException, SignatureException, InvalidKeyException, IOException {
+    public void saveImage(ImageCommand imageCommand) {
         String key = signService.makeDigitalSign(imageCommand.getName());
         imageCommand.setDigitalSign(key);
         this.imageRepository.save(new Image(imageCommand));
@@ -37,7 +37,7 @@ public class ImageStoreService {
         return imageRepository.findAll().stream().map(ImageMeta::new).collect(Collectors.toList());
     }
 
-    public byte[] getByteArrayById(Long id) {
+    public byte[] getByteArrayByImageId(Long id) {
         return imageRepository.findById(id).orElseThrow(EntityNotFoundException::new).getFileData();
     }
 

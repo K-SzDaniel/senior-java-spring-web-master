@@ -2,11 +2,13 @@ package hu.ponte.hr.domain.dto;
 
 import hu.ponte.hr.domain.Image;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author zoltan
  */
 @Getter
+@Setter
 public class ImageMeta
 {
 	private Long id;

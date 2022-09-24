@@ -40,8 +40,8 @@ class ImageStoreServiceTest {
         ImageCommand imageCommand = new ImageCommand("test", "test", 1L,
                 Files.readAllBytes(Paths.get("src/test/resources/images/cat.jpg")));
 
-        this.imageStoreService.saveImageAtByteArray(imageCommand);
-        this.imageStoreService.saveImageAtByteArray(imageCommand);
+        this.imageStoreService.saveImage(imageCommand);
+        this.imageStoreService.saveImage(imageCommand);
 
         List<ImageMeta> imageMetas = this.imageStoreService.getAllImage();
 
@@ -60,9 +60,9 @@ class ImageStoreServiceTest {
         ImageCommand imageCommand = new ImageCommand("test", "test", 1L,
                 Files.readAllBytes(Paths.get("src/test/resources/images/cat.jpg")));
 
-        this.imageStoreService.saveImageAtByteArray(imageCommand);
+        this.imageStoreService.saveImage(imageCommand);
 
-        byte[] imageByteArray = this.imageStoreService.getByteArrayById(4L);
+        byte[] imageByteArray = this.imageStoreService.getByteArrayByImageId(4L);
 
 
         Assertions.assertNotNull(imageByteArray);

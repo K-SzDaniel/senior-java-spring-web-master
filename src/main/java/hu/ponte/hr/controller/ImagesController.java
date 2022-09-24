@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController()
 @RequestMapping("api/images")
 public class ImagesController {
 
-    private ImageStoreService imageStoreService;
+    private final ImageStoreService imageStoreService;
 
     @Autowired
     public ImagesController(ImageStoreService imageStoreService) {
@@ -26,13 +25,13 @@ public class ImagesController {
     }
 
     @GetMapping("meta")
-    public ResponseEntity<List<ImageMeta>> listImages() {
+    public ResponseEntity<List<ImageMeta>> getListOfImages() {
         return new ResponseEntity<>(imageStoreService.getAllImage(), HttpStatus.OK);
     }
 
     @GetMapping("preview/{id}")
-    public ResponseEntity<byte[]> getImage(@PathVariable("id") Long id, HttpServletResponse response) {
-        return new ResponseEntity<>(imageStoreService.getByteArrayById(id), HttpStatus.OK);
+    public ResponseEntity<byte[]> getImageById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(imageStoreService.getByteArrayByImageId(id), HttpStatus.OK);
     }
 
 }

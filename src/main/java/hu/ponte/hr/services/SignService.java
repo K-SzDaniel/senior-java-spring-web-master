@@ -15,19 +15,28 @@ import java.util.Base64;
 public class SignService {
 
 
-    public String makeDigitalSign(String fileName) throws NoSuchAlgorithmException, SignatureException, InvalidKeyException, IOException, InvalidKeySpecException {
-        byte[] key = Files.readAllBytes(Paths.get("src/main/resources/config/keys/key.private"));
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(key);
-        PrivateKey finalKey = keyFactory.generatePrivate(keySpec);
+    public String makeDigitalSign(String fileName) {
 
-        Signature shaRsa = Signature.getInstance("SHA256withRSA");
-        shaRsa.initSign(finalKey);
+        PKCS8EncodedKeySpec spec = null;
+        try {
+            byte[] key = Files.readAllBytes(Paths.get("src/main/resources/config/keys/key.private"));
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(key);
+            PrivateKey finalKey = keyFactory.generatePrivate(keySpec);
 
-        shaRsa.update(fileName.getBytes(StandardCharsets.UTF_8));
-        byte[] signature = shaRsa.sign();
-        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(signature);
+            Signature shaRsa = Signature.getInstance("SHA256withRSA");
+            shaRsa.initSign(finalKey);
 
+            shaRsa.update(fileName.getBytes(StandardCharsets.UTF_8));
+            byte[] signature = shaRsa.sign();
+            spec = new PKCS8EncodedKeySpec(signature);
+
+        } catch (IOException | SignatureException | InvalidKeyException | InvalidKeySpecException |
+                 NoSuchAlgorithmException e) {
+            e.fillInStackTrace();
+        }
+
+        assert spec != null;
         return Base64.getEncoder().encodeToString(spec.getEncoded());
     }
 }
